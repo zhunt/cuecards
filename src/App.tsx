@@ -61,6 +61,11 @@ function App() {
         }
     };
 
+    const handleCardUpdate = async (updatedCard: Card) => {
+        setSessionCards(prev => prev.map(c => c.id === updatedCard.id ? updatedCard : c));
+        await updateCard(updatedCard);
+    };
+
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen bg-slate-950 text-indigo-400">
@@ -92,7 +97,7 @@ function App() {
                                     setEditingCard(currentCard);
                                     setIsFormOpen(true);
                                 }}
-                                onUpdate={updateCard}
+                                onUpdate={handleCardUpdate}
                             />
                         ) : (
                             <div className="text-center py-20">
