@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Check, SkipForward, Edit2 } from 'lucide-react';
+import { Check, SkipForward, Edit2, CheckSquare, Square } from 'lucide-react';
 import { Card } from '../types';
 
 interface CueCardProps {
@@ -7,9 +7,22 @@ interface CueCardProps {
     onDone: () => void;
     onSkip: () => void;
     onEdit: () => void;
+    onUpdate: (card: Card) => void;
 }
 
-export function CueCard({ card, onDone, onSkip, onEdit }: CueCardProps) {
+export function CueCard({ card, onDone, onSkip, onEdit, onUpdate }: CueCardProps) {
+    const handleToggleSubtask = (subtaskId: string) => {
+        if (!card.subtasks) return;
+
+        const updatedSubtasks = card.subtasks.map(st =>
+            st.id === subtaskId ? { ...st, isCompleted: !st.isCompleted } : st
+        );
+
+        onUpdate({
+            ...card,
+            subtasks: updatedSubtasks
+        });
+    };
     return (
         <div className="flex flex-col items-center justify-center min-h-[60vh]">
             <motion.div
@@ -42,6 +55,25 @@ export function CueCard({ card, onDone, onSkip, onEdit }: CueCardProps) {
                         <h2 className="text-2xl sm:text-4xl font-bold leading-tight text-white mb-8">
                             {card.description}
                         </h2>
+
+                        {card.subtasks && card.subtasks.length > 0 && (
+                            <div className="space-y-3 mb-8">
+                                {card.subtasks.map((subtask) => (
+                                    <button
+                                        key={subtask.id}
+                                        onClick={() => handleToggleSubtask(subtask.id)}
+                                        className="flex items-start gap-4 text-left group w-full p-2 -ml-2 rounded-lg hover:bg-white/5 transition-colors"
+                                    >
+                                        <div className={`mt-0.5 transition-colors ${subtask.isCompleted ? 'text-indigo-400' : 'text-slate-500 group-hover:text-slate-400'}`}>
+                                            {subtask.isCompleted ? <CheckSquare className="w-5 h-5" /> : <Square className="w-5 h-5" />}
+                                        </div>
+                                        <span className={`text-lg transition-all ${subtask.isCompleted ? 'text-slate-500 line-through' : 'text-slate-200'}`}>
+                                            {subtask.text}
+                                        </span>
+                                    </button>
+                                ))}
+                            </div>
+                        )}
 
                         <div className="flex gap-4 mt-8">
                             <button

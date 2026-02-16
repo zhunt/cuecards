@@ -92,6 +92,7 @@ function App() {
                                     setEditingCard(currentCard);
                                     setIsFormOpen(true);
                                 }}
+                                onUpdate={updateCard}
                             />
                         ) : (
                             <div className="text-center py-20">
