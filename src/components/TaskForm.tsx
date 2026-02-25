@@ -13,6 +13,7 @@ export function TaskForm({ initialData, categories, onSave, onCancel }: TaskForm
     const [description, setDescription] = useState(initialData?.description || '');
     const [category, setCategory] = useState(initialData?.category || categories[0] || 'General');
     const [repeatFrequency, setRepeatFrequency] = useState(initialData?.repeatFrequency || 1);
+    const [doesNotRepeat, setDoesNotRepeat] = useState(initialData?.doesNotRepeat || false);
     const [subtasks, setSubtasks] = useState<Subtask[]>(initialData?.subtasks || []);
     const [newSubtaskText, setNewSubtaskText] = useState('');
     const [newCategory, setNewCategory] = useState('');
@@ -40,6 +41,7 @@ export function TaskForm({ initialData, categories, onSave, onCancel }: TaskForm
             description,
             category: isAddingCategory ? newCategory : category,
             repeatFrequency,
+            doesNotRepeat,
             subtasks,
         });
     };
@@ -120,17 +122,36 @@ export function TaskForm({ initialData, categories, onSave, onCancel }: TaskForm
                             )}
                         </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-slate-300 mb-2">
-                                Repeat Frequency (Days)
-                            </label>
-                            <input
-                                type="number"
-                                min="1"
-                                value={repeatFrequency}
-                                onChange={(e) => setRepeatFrequency(parseInt(e.target.value) || 1)}
-                                className="w-full px-4 py-2.5 bg-slate-950 border border-white/10 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50 focus:outline-none transition-all"
-                            />
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-slate-300 mb-2">
+                                    Repeat Options
+                                </label>
+                                <label className="flex items-center gap-3 p-3 bg-slate-950/50 border border-white/5 rounded-xl cursor-pointer hover:bg-slate-900 transition-colors">
+                                    <input
+                                        type="checkbox"
+                                        checked={doesNotRepeat}
+                                        onChange={(e) => setDoesNotRepeat(e.target.checked)}
+                                        className="w-5 h-5 rounded border-white/20 bg-slate-950 text-indigo-500 focus:ring-indigo-500/50 focus:ring-offset-0 transition-all"
+                                    />
+                                    <span className="text-slate-300">This task does not repeat</span>
+                                </label>
+                            </div>
+
+                            {!doesNotRepeat && (
+                                <div className="animate-in fade-in slide-in-from-top-2 duration-200">
+                                    <label className="block text-sm font-medium text-slate-300 mb-2">
+                                        Repeat Frequency (Days)
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        value={repeatFrequency}
+                                        onChange={(e) => setRepeatFrequency(parseInt(e.target.value) || 1)}
+                                        className="w-full px-4 py-2.5 bg-slate-950 border border-white/10 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50 focus:outline-none transition-all"
+                                    />
+                                </div>
+                            )}
                         </div>
                     </div>
 

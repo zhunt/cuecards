@@ -4,6 +4,8 @@ export interface Card {
     category: string;
     lastDone: string | null; // ISO Date string
     repeatFrequency: number; // Days until next appearance (approx)
+    doesNotRepeat?: boolean; // If true, the card does not repeat after being done
+    isArchived?: boolean;    // If true, the card is hidden from active sessions
     subtasks?: Subtask[];
 }
 

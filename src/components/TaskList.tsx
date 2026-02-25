@@ -52,9 +52,17 @@ export function TaskList({ cards, onEdit, onDelete, onAdd }: TaskListProps) {
                                     {card.category}
                                 </span>
                                 <span title="Repeat Frequency" className="flex items-center gap-1 text-xs text-slate-500 bg-slate-800/50 px-2 py-0.5 rounded-full border border-white/5">
-                                    <RotateCw className="w-3 h-3" />
-                                    Every {card.repeatFrequency} days
+                                    {card.doesNotRepeat ? (
+                                        <>Does not repeat</>
+                                    ) : (
+                                        <><RotateCw className="w-3 h-3" /> Every {card.repeatFrequency} days</>
+                                    )}
                                 </span>
+                                {card.isArchived && (
+                                    <span title="Status" className="flex items-center gap-1 text-xs text-orange-400 bg-orange-400/10 px-2 py-0.5 rounded-full border border-orange-400/20">
+                                        Archived
+                                    </span>
+                                )}
                                 {card.lastDone && (
                                     <span title="Last Done" className="flex items-center gap-1 text-xs text-slate-500 bg-slate-800/50 px-2 py-0.5 rounded-full border border-white/5">
                                         <Calendar className="w-3 h-3" />

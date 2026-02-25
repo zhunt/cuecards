@@ -28,7 +28,8 @@ function App() {
     // Initialize session cards when data loads
     useMemo(() => {
         if (data.cards.length > 0 && sessionCards.length === 0) {
-            setSessionCards([...data.cards].sort(() => Math.random() - 0.5));
+            const activeCards = data.cards.filter(card => !card.isArchived);
+            setSessionCards([...activeCards].sort(() => Math.random() - 0.5));
         }
     }, [data.cards, sessionCards.length]);
 

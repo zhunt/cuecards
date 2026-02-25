@@ -59,7 +59,11 @@ export function useCards() {
     const markDone = async (id: string) => {
         const card = data.cards.find(c => c.id === id);
         if (card) {
-            const updatedCard = { ...card, lastDone: new Date().toISOString() };
+            const updatedCard = {
+                ...card,
+                lastDone: new Date().toISOString(),
+                ...(card.doesNotRepeat ? { isArchived: true } : {})
+            };
             await updateCard(updatedCard);
         }
     }
